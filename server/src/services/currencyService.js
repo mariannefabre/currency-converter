@@ -14,46 +14,30 @@ const getAllCurrencies = async () => {
   }
 };
 
-const getExchangeRate = async (baseCurrency, outputCurrency) => {
+const getConversionData = async (baseCurrency, outputCurrency, amount) => {
   try {
-    const apiUrl = `${process.env.API_URL}/latest?access_key=${process.env.API_KEY}&base=${baseCurrency}&symbols=${outputCurrency}`;
+    const apiUrl = `${process.env.SECOND_API_URL}/${process.env.SECOND_API_KEY}/pair/${baseCurrency}/${outputCurrency}/${amount}`;
     const response = await axios.get(apiUrl);
-    const { rates, date, timestamp } = response.data;
-    const exchangeRate = rates[outputCurrency];
-    if (response?.data?.success !== true) {
-      throw new Error(`No exchange rate found for ${outputCurrency}`);
+    const { conversion_rate, time_last_update_utc, conversion_result } =
+      response.data;
+    console.log(response.data);
+    if (response?.data?.result !== "success") {
+      throw new Error(
+        `No conversion found for ${baseCurrency}/${outputCurrency}`
+      );
     }
-
     return {
-      exchangeRate,
-      date,
-      timestamp,
+      exchangeRate: conversion_rate,
+      lastUpdateUtc: time_last_update_utc,
+      conversionResult: conversion_result,
     };
   } catch (error) {
-    console.error(`Error fetching exchange rate: ${error.message}`);
+    console.error(`Error with the conversion: ${error.message}`);
     throw error;
   }
 };
 
-const convertCurrency = async (baseCurrency, outputCurrency, amount) => {
-  try {
-    const { exchangeRate, date, timestamp } = await getExchangeRate(
-      baseCurrency,
-      outputCurrency
-    );
-    const convertedAmount = exchangeRate * amount;
-    return {
-      exchangeRate,
-      date,
-      timestamp,
-      convertedAmount,
-    };
-  } catch (error) {
-    throw new Error(`Failed to convert currency: ${error.message}`);
-  }
-};
-
 module.exports = {
-  convertCurrency,
   getAllCurrencies,
+  getConversionData,
 };

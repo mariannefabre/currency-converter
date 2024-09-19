@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-  convertCurrency,
+  getConversionData,
   getAllCurrencies,
 } = require("../services/currencyService");
 const router = express.Router();
@@ -15,7 +15,7 @@ router.post("/convert", async (req, res) => {
   }
 
   try {
-    const conversionResult = await convertCurrency(base, target, amount);
+    const conversionResult = await getConversionData(base, target, amount);
     res.json(conversionResult);
   } catch (error) {
     res.status(500).json({ error: error.message });
