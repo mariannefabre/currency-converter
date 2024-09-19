@@ -1,0 +1,5 @@
+# Dependencies
+/node_modules
+
+# OSX Desktop Service
+.DS_Store
