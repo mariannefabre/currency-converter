@@ -14,6 +14,16 @@ To run the project locally, run the following commands :
 
 Open [http://localhost:3000](http://localhost:3000) in your browser and start using the app.
 
-## Drawbacks
+## APIs Used
 
-Currently the application uses a free API to get exchange rates, which limits the functionality to conversions with EUR as the base currency. Given more time and resources, I would explore other APIs to allow for more flexible currency conversion, making the app more versatile and useful.
+This project utilizes two APIs:
+
+API 1: Fetches a list of all available currencies.
+API 2: Converts between currencies.
+
+## Known Limitations
+
+Since the application uses two different APIs for different functionalities, there could be cases where:
+
+Some currencies displayed in the list may not be available for conversion.
+This limitation arises due to possible discrepancies between the currencies supported by the two APIs. Future enhancements may involve aligning both APIs or switching to a single comprehensive API.
