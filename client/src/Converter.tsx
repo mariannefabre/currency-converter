@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ExchangeRateDisplay } from "./ExchangeRateDisplay";
-import { CurrencyInput } from "./CurrencyInput";
+import { CurrencyInput, CurrencyInputType } from "./CurrencyInput";
 
 export const Converter = (): JSX.Element => {
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -50,15 +50,32 @@ export const Converter = (): JSX.Element => {
     }
   };
 
+  // handles amount changes for either the base or target currency input
+  const handleAmountChange = (amount: number, type: CurrencyInputType) => {
+    if (type === "base") {
+      setBaseAmount(amount);
+      if (exchangeRate) {
+        const newTargetAmount = Math.round(amount * exchangeRate * 100) / 100;
+        setTargetAmount(newTargetAmount);
+      }
+    } else if (type === "target") {
+      setTargetAmount(amount);
+      if (exchangeRate) {
+        const newBaseAmount = Math.round((amount / exchangeRate) * 100) / 100;
+        setBaseAmount(newBaseAmount);
+      }
+    }
+  };
+
   // fetch all currencies on mount
   useEffect(() => {
     fetchAllCurrencies();
   }, []);
 
-  // fetch conversion data on each baseAmount, baseCurrency or targetCurrency updates
+  // fetch conversion data on baseCurrency or targetCurrency updates
   useEffect(() => {
     fetchConversionData();
-  }, [baseAmount, baseCurrency, targetCurrency]);
+  }, [baseCurrency, targetCurrency]);
 
   return (
     <ConverterContainer>
@@ -81,19 +98,21 @@ export const Converter = (): JSX.Element => {
         <UserInput>
           <CurrencyInput
             value={baseAmount}
-            onAmountChange={setBaseAmount}
+            onAmountChange={handleAmountChange}
             selectedCurrency={baseCurrency}
             onCurrencyChange={setBaseCurrency}
             currencies={currencies}
+            type="base"
           />
           <CurrencyInput
             value={targetAmount}
-            onAmountChange={setTargetAmount}
+            onAmountChange={handleAmountChange}
             selectedCurrency={targetCurrency}
             onCurrencyChange={setTargetCurrency}
             currencies={currencies?.filter(
               (currency) => currency !== baseCurrency
             )}
+            type="target"
           />
         </UserInput>
       </TabContent>

@@ -1,11 +1,14 @@
 import { styled } from "styled-components";
 
+export type CurrencyInputType = "base" | "target";
+
 interface CurrencyInputProps {
   value: number | undefined;
-  onAmountChange: (value: number) => void;
+  onAmountChange: (amount: number, type: CurrencyInputType) => void;
   selectedCurrency: string;
   onCurrencyChange: (currency: string) => void;
   currencies: string[] | undefined;
+  type: CurrencyInputType;
 }
 
 export const CurrencyInput = ({
@@ -14,12 +17,14 @@ export const CurrencyInput = ({
   selectedCurrency,
   onCurrencyChange,
   currencies,
+  type,
 }: CurrencyInputProps): JSX.Element => {
   return (
     <InputWrapper>
       <InputText
+        type="number"
         value={value}
-        onChange={(e) => onAmountChange(Number(e.target.value))}
+        onChange={(e) => onAmountChange(Number(e.target.value), type)}
       />
       <InputCurrency
         value={selectedCurrency}
