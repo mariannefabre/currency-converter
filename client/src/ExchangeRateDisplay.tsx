@@ -1,14 +1,12 @@
 import styled from "styled-components";
 
 interface ExchangeRateDisplayProps {
-  baseAmount: number;
   baseCurrency: string;
   exchangeRate: number | undefined;
   targetCurrency: string;
   date: string | undefined;
 }
 export const ExchangeRateDisplay = ({
-  baseAmount,
   baseCurrency,
   exchangeRate,
   targetCurrency,
@@ -16,9 +14,7 @@ export const ExchangeRateDisplay = ({
 }: ExchangeRateDisplayProps): JSX.Element => {
   return (
     <ExchanceRate>
-      <ExchangedAmount>
-        {baseAmount} {baseCurrency} =
-      </ExchangedAmount>
+      <ExchangedAmount>1 {baseCurrency} =</ExchangedAmount>
       <ResultAmount>
         {exchangeRate} {targetCurrency}
       </ResultAmount>

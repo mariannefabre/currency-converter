@@ -89,7 +89,6 @@ export const Converter = (): JSX.Element => {
       </Tabs>
       <TabContent isSelected={selectedTab === 0}>
         <ExchangeRateDisplay
-          baseAmount={baseAmount}
           baseCurrency={baseCurrency}
           exchangeRate={exchangeRate}
           targetCurrency={targetCurrency}
